@@ -1,8 +1,8 @@
 import { parse } from 'esprima';
 
-const Mapper = (filename, options) => {
+const Parser = (filename, options) => {
     return {
-        map: (js) => {
+        parse: (source) => {
             const extractImportDeclarations = (ast) => ast.body.filter(token => token.type === 'ImportDeclaration');
             const extractExportDeclarations = (ast) => ast.body.filter(token => token.type === 'ExportDefaultDeclaration' || token === 'ExportDeclaration');
 
@@ -11,7 +11,7 @@ const Mapper = (filename, options) => {
 
             const normalizeImports = (importDeclarations) => importDeclarations.map(importDeclaration => importDeclaration.split('/').pop());
 
-            const ast = parse(js, options);
+            const ast = parse(source, options);
 
             return {
                 filename: filename,
@@ -22,4 +22,4 @@ const Mapper = (filename, options) => {
     }
 };
 
-export default Mapper;
+export default Parser;
