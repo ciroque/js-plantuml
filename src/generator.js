@@ -22,6 +22,17 @@
   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-export {
+/*
+    Given the intermediate representation of the code, generates the PlantUML
+ */
+const Generator = () => {
+    return {
+        generate: (module) => {
+            const references = [];
+            module.imports.forEach(imp => references.push(`[${module.name}] --> [${imp}]`));
+            return references.join('\n');
+        }
+    };
+};
 
-}
+export default Generator;

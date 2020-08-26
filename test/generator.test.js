@@ -22,6 +22,19 @@
   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-export {
+import Generator from "../src/generator";
 
-}
+test('generates PlantUML correctly', () => {
+    const module = {
+        filename: 'index.js',
+        name: 'index',
+        imports: ['app', 'main'],
+        exports: []
+    }
+    const expected = `[index] --> [app]
+[index] --> [main]`;
+
+    const actual = Generator().generate(module);
+
+    expect(actual).toStrictEqual(expected);
+});
