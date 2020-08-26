@@ -5,13 +5,19 @@
   "main": "index.js",
   "module": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
-  "author": "",
+  "author": "Steve Wagner (scaxlawagz@outlook.com)",
   "license": "ISC",
   "dependencies": {
     "esm": "^3.2.25",
     "esprima": "^4.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/preset-env": "^7.11.0",
+    "babel-jest": "^26.3.0",
+    "jest": "^26.4.2"
   }
 }
