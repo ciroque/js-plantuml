@@ -24,6 +24,8 @@
  * /
  */
 
+import path from 'path';
+
 import DirectoryWalker from "../src/directoryWalker";
 
 test('walks the walk', async () => {
@@ -34,7 +36,20 @@ test('walks the walk', async () => {
         entries.push(fullPath);
     }
 
-    console.debug(JSON.stringify(entries, null, 4));
-
     expect(entries.length).toBeGreaterThan(0);
 });
+
+test('defaults to .js and .jsx files', async () => {
+    const directory = './src';
+    const extensions = ['.js', '.jsx'];
+    const entries = [];
+    for await (const fullPath of DirectoryWalker().walk(directory)) {
+        entries.push(fullPath);
+    }
+
+    expect(entries.every(entry => extensions.includes(path.extname(entry)))).toBeTruthy();
+});
+
+test.todo('allows file extensions to be provided');
+
+test.todo('accepts directory exclusion list');
