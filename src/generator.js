@@ -27,10 +27,10 @@
  */
 const Generator = () => {
     return {
-        generate: (module) => {
+        generate: async (module) => {
             const references = [];
             module.imports.forEach(imp => references.push(`[${module.name}] --> [${imp}]`));
-            return references.length == 0 ? null : references.join('\n');
+            return new Promise(r => r(references.join('\n')));
         }
     };
 };

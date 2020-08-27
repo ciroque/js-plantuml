@@ -42,7 +42,10 @@ const JsPlantUml = () => {
                 try {
                     const source = await fs.promises.readFile(fullPath, 'utf8');
                     const parsed = await Parser(filename).parse(source);
-                    plantUmls.push(Generator().generate(parsed));
+                    const plantUml = await Generator().generate(parsed);
+                    if(plantUml) {
+                        plantUmls.push(plantUml);
+                    }
                 } catch(err) {
                     errors.push(`${filename}: ${err}`);
                 }

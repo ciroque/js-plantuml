@@ -24,7 +24,7 @@
 
 import Generator from "../src/generator";
 
-test('generates PlantUML correctly', () => {
+test('generates PlantUML correctly', async () => {
     const module = {
         filename: 'index.js',
         name: 'index',
@@ -34,7 +34,7 @@ test('generates PlantUML correctly', () => {
     const expected = `[index] --> [app]
 [index] --> [main]`;
 
-    const actual = Generator().generate(module);
+    const actual = await Generator().generate(module);
 
     expect(actual).toStrictEqual(expected);
 });
