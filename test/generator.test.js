@@ -38,3 +38,5 @@ test('generates PlantUML correctly', () => {
 
     expect(actual).toStrictEqual(expected);
 });
+
+test.todo('return null when module has no imports')

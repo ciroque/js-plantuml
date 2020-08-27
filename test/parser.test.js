@@ -23,10 +23,13 @@
 */
 import Parser from '../src/parser';
 
-test('parses module Javascript to intermediate format', () => {
+test('parses module Javascript to intermediate format', async () => {
     const options = {sourceType: 'module'};
     const filename = 'sample.js';
     const js = `
+        /* 
+            This is a multiline comment
+         */
         import x from './x';
         import { a, b, c } from './y';
         import z from './z';
@@ -42,13 +45,12 @@ test('parses module Javascript to intermediate format', () => {
         exports: ['id']
     };
 
-    const mapper = Parser(filename, options);
-    const actual = mapper.parse(js);
+    const actual = await Parser(filename, options).parse(js);
 
     expect(actual).toStrictEqual(expected);
 });
 
-test('parses jsx to intermediate format', () => {
+test('parses jsx to intermediate format', async () => {
     const options = {sourceType: 'module', jsx: true};
     const filename = 'sample.jsx';
     const jsx = `
@@ -73,5 +75,5 @@ test('parses jsx to intermediate format', () => {
         exports: ['App']
     }
 
-    expect(Parser(filename, options).parse(jsx)).toStrictEqual(expected);
+    expect(await Parser(filename, options).parse(jsx)).toStrictEqual(expected);
 });

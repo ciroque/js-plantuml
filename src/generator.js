@@ -30,7 +30,7 @@ const Generator = () => {
         generate: (module) => {
             const references = [];
             module.imports.forEach(imp => references.push(`[${module.name}] --> [${imp}]`));
-            return references.join('\n');
+            return references.length == 0 ? null : references.join('\n');
         }
     };
 };

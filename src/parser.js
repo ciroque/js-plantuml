@@ -24,29 +24,47 @@
 
 import { parse } from 'esprima';
 
-const Parser = (filename, options) => {
+const Parser = (filename, opts) => {
+    const options = Object.assign(
+        { sourceType: 'module' },
+        opts
+    )
+    const doParse = (source) => {
+        const formatModuleName = (filename) => filename.split('.').reverse().pop();
+        const extractImportDeclarations = (ast) => ast.body.filter(token => token.type === 'ImportDeclaration');
+        const extractExportDeclarations = (ast) => ast.body.filter(token => token.type === 'ExportDefaultDeclaration' || token === 'ExportDeclaration');
+
+        const mapImports = (importDeclarations) => importDeclarations.map(importDeclaration => importDeclaration.source.value);
+        const mapExports = (exportDeclarations) => exportDeclarations.map(exportDeclaration => exportDeclaration.declaration.name);
+
+        const normalizeImports = (importDeclarations) => importDeclarations.map(importDeclaration => importDeclaration.split('/').pop());
+
+        let ast = {};
+        try {
+            ast = parse(source, options);
+        } catch(ex) {
+            throw ex;
+        }
+
+        const imports = normalizeImports(mapImports(extractImportDeclarations(ast)));
+        const exports = mapExports(extractExportDeclarations(ast));
+
+        return {
+            filename: filename,
+            name: formatModuleName(filename),
+            imports: imports,
+            exports: exports
+        };
+    }
     return {
-        parse: (source) => {
-            const formatModuleName = (filename) => filename.split('.').reverse().pop();
-            const extractImportDeclarations = (ast) => ast.body.filter(token => token.type === 'ImportDeclaration');
-            const extractExportDeclarations = (ast) => ast.body.filter(token => token.type === 'ExportDefaultDeclaration' || token === 'ExportDeclaration');
-
-            const mapImports = (importDeclarations) => importDeclarations.map(importDeclaration => importDeclaration.source.value);
-            const mapExports = (exportDeclarations) => exportDeclarations.map(exportDeclaration => exportDeclaration.declaration.name);
-
-            const normalizeImports = (importDeclarations) => importDeclarations.map(importDeclaration => importDeclaration.split('/').pop());
-
-            const ast = parse(source, options);
-
-            const imports = ast |> extractImportDeclarations |> mapImports |> normalizeImports;
-            const exports = ast |> extractExportDeclarations |> mapExports;
-
-            return {
-                filename: filename,
-                name: formatModuleName(filename),
-                imports: imports,
-                exports: exports
-            }
+        parse: async (source) => {
+            return new Promise((resolve, reject) => {
+                try {
+                    resolve(doParse(source));
+                } catch(ex) {
+                    reject(ex);
+                }
+            });
         }
     };
 };

@@ -23,25 +23,34 @@
  *   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * /
  */
-
 import fs from 'fs';
 import path from 'path';
 
-const DirectoryWalker = (opts) => {
-    const options = Object.assign({ extensions: ['.js', '.jsx'], excludePaths: [] }, opts);
-    const isAcceptedFileType = (entry) => entry.isFile() && options.extensions.includes(path.extname(entry.name).toLowerCase());
-    const isAcceptedDirectory = (entry) => entry.isDirectory() && !options.excludePaths.includes(entry.name);
-    const walker = async function* (directory) {
-        for await (const entry of await fs.promises.opendir(directory)) {
-            const fullPath = path.join(directory, entry.name);
-            if (isAcceptedDirectory(entry)) yield* walker(fullPath);
-            else if (isAcceptedFileType(entry)) yield path.resolve(fullPath);
-        }
-    };
+import DirectoryWalker from "./directorywalker";
+import Parser from "./parser";
+import Generator from "./generator";
 
+const JsPlantUml = () => {
     return {
-        walk: walker
+        generate: async (opts) => {
+            const options = Object.assign({ directory: './src' }, opts);
+            const plantUmls = [];
+            const errors = [];
+
+            for await (const fullPath of DirectoryWalker().walk(options.directory)) {
+                const filename = path.basename(fullPath);
+                try {
+                    const source = await fs.promises.readFile(fullPath, 'utf8');
+                    const parsed = await Parser(filename).parse(source);
+                    plantUmls.push(Generator().generate(parsed));
+                } catch(err) {
+                    errors.push(`${filename}: ${err}`);
+                }
+            }
+
+            return new Promise(r => r({plantUml: plantUmls, errors: errors}));
+        }
     };
 };
 
-export default DirectoryWalker;
+export default JsPlantUml;

@@ -24,24 +24,11 @@
  * /
  */
 
-import fs from 'fs';
-import path from 'path';
+import JsPlantUml from "../src/jsplantuml";
 
-const DirectoryWalker = (opts) => {
-    const options = Object.assign({ extensions: ['.js', '.jsx'], excludePaths: [] }, opts);
-    const isAcceptedFileType = (entry) => entry.isFile() && options.extensions.includes(path.extname(entry.name).toLowerCase());
-    const isAcceptedDirectory = (entry) => entry.isDirectory() && !options.excludePaths.includes(entry.name);
-    const walker = async function* (directory) {
-        for await (const entry of await fs.promises.opendir(directory)) {
-            const fullPath = path.join(directory, entry.name);
-            if (isAcceptedDirectory(entry)) yield* walker(fullPath);
-            else if (isAcceptedFileType(entry)) yield path.resolve(fullPath);
-        }
-    };
+test.todo('placeholder');
 
-    return {
-        walk: walker
-    };
-};
-
-export default DirectoryWalker;
+test('run the thing', async () => {
+    const result = await JsPlantUml().generate();
+    console.log(JSON.stringify(result, null, 3));
+});
