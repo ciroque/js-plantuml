@@ -9,5 +9,8 @@ module.exports = {
             },
         ],
     ],
-    plugins: ["syntax-async-generators"]
+    plugins: [
+        'syntax-async-generators',
+        ["@babel/plugin-proposal-pipeline-operator", { "proposal": "fsharp" }]
+    ]
 };

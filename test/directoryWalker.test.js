@@ -29,9 +29,10 @@ import DirectoryWalker from "../src/directoryWalker";
 test('walks the walk', async () => {
     const directory = './src';
     const entries = [];
-    const visitor = e => entries.push(e);
 
-    for await (const p of DirectoryWalker(directory).walk(visitor)) {}
+    for await (const fullPath of DirectoryWalker().walk(directory)) {
+        entries.push(fullPath);
+    }
 
     console.debug(JSON.stringify(entries, null, 4));
 

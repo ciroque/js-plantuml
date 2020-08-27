@@ -27,14 +27,14 @@
 import fs from 'fs';
 import path from 'path';
 
-const DirectoryWalker = (directory) => {
-    const walker = async function* walk(visitor) {
-        for await (const d of await fs.promises.opendir(directory)) {
-            const applyVisitor = (entry) => (resolve) => resolve(visitor(entry));
-            const entry = path.join(directory, d.name);
-            await new Promise(applyVisitor(entry));
-            if (d.isDirectory()) yield* DirectoryWalker(entry).walk(visitor);
-            else if (d.isFile()) yield entry;
+const DirectoryWalker = (opts) => {
+    const options = opts || {extensions: ['js', 'jsx']};
+    const isAcceptedFileType = (entry) => entry.isFile() && options.extensions.includes(path.extname(entry.name).replace('.', '').toLowerCase());
+    const walker = async function* walk(directory) {
+        for await (const entry of await fs.promises.opendir(directory)) {
+            const fullPath = path.join(directory, entry.name);
+            if (entry.isDirectory()) yield* walk(fullPath);
+            else if (entry |> isAcceptedFileType) yield fullPath;
         }
     };
 

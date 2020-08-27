@@ -38,11 +38,14 @@ const Parser = (filename, options) => {
 
             const ast = parse(source, options);
 
+            const imports = ast |> extractImportDeclarations |> mapImports |> normalizeImports;
+            const exports = ast |> extractExportDeclarations |> mapExports;
+
             return {
                 filename: filename,
                 name: formatModuleName(filename),
-                imports: normalizeImports(mapImports(extractImportDeclarations(ast))),
-                exports: mapExports(extractExportDeclarations(ast))
+                imports: imports,
+                exports: exports
             }
         }
     };
