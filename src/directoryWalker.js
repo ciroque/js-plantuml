@@ -28,8 +28,8 @@ import fs from 'fs';
 import path from 'path';
 
 const DirectoryWalker = (opts) => {
-    const options = opts || {extensions: ['js', 'jsx']};
-    const isAcceptedFileType = (entry) => entry.isFile() && options.extensions.includes(path.extname(entry.name).replace('.', '').toLowerCase());
+    const options = opts || {extensions: ['.js', '.jsx']};
+    const isAcceptedFileType = (entry) => entry.isFile() && options.extensions.includes(path.extname(entry.name).toLowerCase());
     const walker = async function* walk(directory) {
         for await (const entry of await fs.promises.opendir(directory)) {
             const fullPath = path.join(directory, entry.name);

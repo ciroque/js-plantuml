@@ -52,12 +52,11 @@ test('defaults to .js and .jsx files', async () => {
 
 test('allows file extensions to be provided', async () => {
     const directory = '.';
-    const options = {extensions: ['md']};
+    const options = {extensions: ['.md']};
     const entries = [];
-    for await (const fullPath of DirectoryWalker().walk(directory)) {
+    for await (const fullPath of DirectoryWalker(options).walk(directory)) {
         entries.push(fullPath);
     }
-
     expect(entries.every(entry => options.extensions.includes(path.extname(entry)))).toBeTruthy();
 });
 
