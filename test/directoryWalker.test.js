@@ -60,4 +60,12 @@ test('allows file extensions to be provided', async () => {
     expect(entries.every(entry => options.extensions.includes(path.extname(entry)))).toBeTruthy();
 });
 
-test.todo('accepts directory exclusion list');
+test('accepts directory exclusion list', async () => {
+    const directory = '.';
+    const options = {excludePaths: ['node_modules']};
+    const entries = [];
+    for await (const fullPath of DirectoryWalker(options).walk(directory)) {
+        entries.push(fullPath);
+    }
+    expect(entries.filter(entry => options.excludePaths.some(path => entry.includes(path))).length).toEqual(0);
+});
