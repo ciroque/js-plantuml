@@ -27,7 +27,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const Directorywalker = (opts) => {
+const DirectoryWalker = (opts) => {
     const options = { ...{ extensions: ['.js', '.jsx'], excludePaths: [], ...opts } };
     const isAcceptedFileType = (entry) => entry.isFile() && options.extensions.includes(path.extname(entry.name).toLowerCase());
     const isAcceptedDirectory = (entry) => entry.isDirectory() && !options.excludePaths.includes(entry.name);
@@ -44,4 +44,4 @@ const Directorywalker = (opts) => {
     };
 };
 
-export default Directorywalker;
+export default DirectoryWalker;

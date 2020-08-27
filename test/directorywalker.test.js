@@ -26,13 +26,13 @@
 
 import path from 'path';
 
-import Directorywalker from "../src/directorywalker";
+import DirectoryWalker from "../src/directorywalker";
 
 test('walks the walk', async () => {
     const directory = './src';
     const entries = [];
 
-    for await (const fullPath of Directorywalker().walk(directory)) {
+    for await (const fullPath of DirectoryWalker().walk(directory)) {
         entries.push(fullPath);
     }
 
@@ -43,7 +43,7 @@ test('defaults to .js and .jsx files', async () => {
     const directory = './src';
     const extensions = ['.js', '.jsx'];
     const entries = [];
-    for await (const fullPath of Directorywalker().walk(directory)) {
+    for await (const fullPath of DirectoryWalker().walk(directory)) {
         entries.push(fullPath);
     }
 
@@ -54,7 +54,7 @@ test('allows file extensions to be provided', async () => {
     const directory = '.';
     const options = {extensions: ['.md']};
     const entries = [];
-    for await (const fullPath of Directorywalker(options).walk(directory)) {
+    for await (const fullPath of DirectoryWalker(options).walk(directory)) {
         entries.push(fullPath);
     }
     expect(entries.every(entry => options.extensions.includes(path.extname(entry)))).toBeTruthy();
@@ -64,7 +64,7 @@ test('accepts directory exclusion list', async () => {
     const directory = '.';
     const options = {excludePaths: ['node_modules']};
     const entries = [];
-    for await (const fullPath of Directorywalker(options).walk(directory)) {
+    for await (const fullPath of DirectoryWalker(options).walk(directory)) {
         entries.push(fullPath);
     }
     expect(entries.filter(entry => options.excludePaths.some(path => entry.includes(path))).length).toEqual(0);
