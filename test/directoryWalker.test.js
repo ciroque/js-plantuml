@@ -50,6 +50,15 @@ test('defaults to .js and .jsx files', async () => {
     expect(entries.every(entry => extensions.includes(path.extname(entry)))).toBeTruthy();
 });
 
-test.todo('allows file extensions to be provided');
+test('allows file extensions to be provided', async () => {
+    const directory = '.';
+    const options = {extensions: ['md']};
+    const entries = [];
+    for await (const fullPath of DirectoryWalker().walk(directory)) {
+        entries.push(fullPath);
+    }
+
+    expect(entries.every(entry => options.extensions.includes(path.extname(entry)))).toBeTruthy();
+});
 
 test.todo('accepts directory exclusion list');
