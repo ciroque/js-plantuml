@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "module": "main.js",
+  "type": "module",
   "scripts": {
     "test": "jest"
   },

@@ -22,6 +22,8 @@
   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-export {
+import JsPlantUml from "./src/jsplantuml.mjs";
 
+export {
+    JsPlantUml
 }

@@ -22,7 +22,7 @@
   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import { parse } from 'esprima';
+import esprima from 'esprima';
 
 const Parser = (filename, opts) => {
     const options = Object.assign(
@@ -41,7 +41,7 @@ const Parser = (filename, opts) => {
 
         let ast = {};
         try {
-            ast = parse(source, options);
+            ast = esprima.parse(source, options);
         } catch(ex) {
             throw ex;
         }

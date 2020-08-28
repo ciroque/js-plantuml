@@ -22,5 +22,10 @@
   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-require = require("esm")(module/* , options */)
-module.exports = require("./main.js")
+import {JsPlantUml} from "./main.js";
+
+// require = require("esm")(module/* , options */)
+// module.exports = require("./main.js")
+
+const plantUml = await JsPlantUml().generate({ directory: '/data/Development/Projects/Ciroque/birbleby/assets/js'});
+console.log(JSON.stringify(plantUml));

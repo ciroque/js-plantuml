@@ -26,9 +26,9 @@
 import fs from 'fs';
 import path from 'path';
 
-import DirectoryWalker from "./directorywalker";
-import Parser from "./parser";
-import Generator from "./generator";
+import DirectoryWalker from "./directorywalker.mjs";
+import Parser from "./parser.mjs";
+import Generator from "./generator.mjs";
 
 const JsPlantUml = () => {
     return {
