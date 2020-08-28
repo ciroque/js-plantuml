@@ -33,18 +33,18 @@ import Generator from "./generator";
 const JsPlantUml = () => {
     return {
         generate: async (opts) => {
-            const options = Object.assign({ directory: './src' }, opts);
-            const plantUmls = [];
+            const options = Object.assign({ directory: './src', parser: { jsx: true } }, opts);
+            let plantUmls = [];
             const errors = [];
 
             for await (const fullPath of DirectoryWalker().walk(options.directory)) {
                 const filename = path.basename(fullPath);
                 try {
                     const source = await fs.promises.readFile(fullPath, 'utf8');
-                    const parsed = await Parser(filename).parse(source);
+                    const parsed = await Parser(filename, options.parser).parse(source);
                     const plantUml = await Generator().generate(parsed);
                     if(plantUml) {
-                        plantUmls.push(plantUml);
+                        plantUmls = plantUmls.concat(plantUml);
                     }
                 } catch(err) {
                     errors.push(`${filename}: ${err}`);

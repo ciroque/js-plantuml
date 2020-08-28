@@ -28,9 +28,7 @@
 const Generator = () => {
     return {
         generate: async (module) => {
-            const references = [];
-            module.imports.forEach(imp => references.push(`[${module.name}] --> [${imp}]`));
-            return new Promise(r => r(references.join('\n')));
+            return new Promise(r => r(module.imports.map(i => `[${module.name}] --> [${i}]`)));
         }
     };
 };
