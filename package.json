@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "esm": "^3.2.25",
+    "espree": "^7.3.0",
     "esprima": "^4.0.1"
   },
   "devDependencies": {

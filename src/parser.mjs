@@ -22,11 +22,11 @@
   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import esprima from 'esprima';
+import espree from 'espree';
 
 const Parser = (filename, opts) => {
     const options = Object.assign(
-        { sourceType: 'module' },
+        { sourceType: 'module', loc: true, ecmaVersion: 7, ecmaFeatures: { jsx: true } },
         opts
     )
     const doParse = (source) => {
@@ -41,7 +41,7 @@ const Parser = (filename, opts) => {
 
         let ast = {};
         try {
-            ast = esprima.parse(source, options);
+            ast = espree.parse(source, options);
         } catch(ex) {
             throw ex;
         }
