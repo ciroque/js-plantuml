@@ -26,6 +26,6 @@ import {JsPlantUml} from "./main.js";
 
 // require = require("esm")(module/* , options */)
 // module.exports = require("./main.js")
-
-const plantUml = await JsPlantUml().generate({ directory: '/data/Development/Projects/Ciroque/birbleby/assets/js'});
+const path = process.argv.slice(2)[0] || './';
+const plantUml = await JsPlantUml().generate({ directory: path});
 console.log(JSON.stringify(plantUml));
